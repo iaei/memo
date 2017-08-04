@@ -1,0 +1,149 @@
+body, html {
+  width: 100%;
+  margin: 0;
+  padding: 0; }
+
+input, textarea {
+  outline: none;
+  border: none;
+  padding: 0; }
+
+p {
+  margin: 0; }
+
+.pullDown {
+  animation: pullDown 500ms ease forwards; }
+@keyframes pullDown {
+  from {
+    height: 0; }
+  to {
+    height: auto; } }
+.del {
+  height: 0; }
+
+#memo > header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  height: 50px;
+  width: 100%;
+  box-shadow: 1px 1px 6px #a2a2a2; }
+
+#memo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-x: hidden; }
+  #memo > main {
+    margin-top: 50px;
+    flex: 1; }
+    #memo > main .items {
+      display: flex;
+      flex-direction: column;
+      background-color: orangered; }
+      #memo > main .items .item {
+        background-color: #fff;
+        box-shadow: 1px 1px 1px #eee;
+        transition: all .5s; }
+        #memo > main .items .item .title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: 60px;
+          margin-top: 3px;
+          padding: 0 13px; }
+          #memo > main .items .item .title p {
+            pointer-events: none; }
+          #memo > main .items .item .title .deadLine {
+            font-size: 14px;
+            pointer-events: none; }
+        #memo > main .items .item .detail {
+          overflow: hidden;
+          box-sizing: border-box;
+          font-size: 14px;
+          color: #666;
+          height: 0;
+          background-color: rgba(0, 0, 0, 0.02); }
+          #memo > main .items .item .detail p {
+            padding: 13px;
+            pointer-events: none; }
+
+#newItem {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #e01c1c;
+  box-shadow: 2px 2px 5px #999;
+  position: fixed;
+  bottom: 20px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 22px; }
+
+#undo {
+  height: 40px;
+  z-index: 1;
+  font-size: 14px;
+  background-color: rgba(43, 43, 43, 0.85);
+  display: flex;
+  color: #fff;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+
+#editor {
+  background-color: #fff;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all .3s ease;
+  transform: scale(0, 0);
+  transform-origin: right bottom; }
+  #editor header {
+    height: 40px;
+    background-color: #2696d4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px 0;
+    box-sizing: border-box;
+    color: #fff; }
+  #editor main {
+    display: flex;
+    flex-direction: column; }
+    #editor main .edTitle {
+      height: 40px;
+      background-color: #2696d4;
+      padding: 3px 10px;
+      color: #fff; }
+      #editor main .edTitle input {
+        height: 100%;
+        width: 100%;
+        background-color: #2696d4;
+        font-size: 16px;
+        color: #fff; }
+        #editor main .edTitle input::-webkit-input-placeholder {
+          color: #fff;
+          font-size: 14px; }
+    #editor main .edDetail {
+      flex: 1;
+      display: flex;
+      box-sizing: border-box;
+      padding: 20px; }
+      #editor main .edDetail textarea {
+        flex: 1;
+        resize: none; }
+
+/*# sourceMappingURL=index.css.map */
