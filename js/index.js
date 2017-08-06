@@ -16,6 +16,7 @@
             this.$newItem = document.querySelector("#newItem");
             this.$title = document.querySelectorAll(".title")
             this.$detail = document.querySelectorAll(".detail");
+            this.$undo = document.querySelector("#undo");
 
             this.$editor = document.querySelector("#editor");
             this.$edTitle = document.querySelector("#edTitle");
@@ -63,8 +64,9 @@
         },
 
         home() {
-            this.$editor.style.transform = 'scale(0, 0)';
-            this.$memo.style.overflow = 'visible';
+            this.$editor.style.transform = 'scaleY(0)';
+            this.$memo.style['overflow-y'] = 'visible';
+
         },
 
         clear() {
@@ -73,9 +75,14 @@
             this.$edDetail.value = null;
         },
 
+    
+
         editor() {
-            this.$editor.style.transform = 'scale(1,1)';
-            this.$memo.style.overflow = 'hidden';
+            this.$editor.style.transform = 'scaleY(1)';
+            this.$memo.style.height="100vh";
+            this.$memo.style['overflow-y'] = 'hidden';
+
+   
         },
 
         save() {
@@ -89,6 +96,7 @@
                 this.items[this.index].title = this.$edTitle.value;
                 this.items[this.index].detail = this.$edDetail.value;
             }
+      
             this.storage();
             this.render();
             this.home();
@@ -105,31 +113,17 @@
             this.editor();
         },
 
-        // pullDown() {
-        //     this.index = event.target.parentElement.dataset.index;
-        //     let cHeight = getComputedStyle(this.$detail[this.index]).height;
-        //     if (cHeight === '0px') {
-        //         this.$detail[this.index].style.height = "auto";
-        //     } else {
-        //         this.$detail[this.index].style.height = "0";
-        //     }
-
-        // },
-
-
+        //主屏幕手势操作
         gesture() {
             let self = this;
-
-
             let startHandler = function (event) {
                 self.countNum = 0;
-                // event.prototype.count = function(){
-                //     self.c++;
-                // }
                 if (isItem()) {
                     self.target = event.target;
-                    self.slideItem = event.target.parentElement;
+                    self.slideItem = event.target.parentElement;//被滑动的元素
+                    self.ind = self.slideItem.dataset.index;
                 }
+                self.slideItem.style.transition = "";
                 self.startX = event.touches[0].pageX;
                 self.startY = event.touches[0].pageY;
                 self.offsetX = 0;
@@ -138,16 +132,16 @@
             };
 
             let moveHandler = function (event) {
+                //用于找到第一次touchmove事件
                 event.count = function () {
                     return self.countNum++;
                 }();
-                //event.count();
-                console.log(self.countNum);
+            
                 self.offsetX = event.touches[0].pageX - self.startX;
                 self.offsetY = event.touches[0].pageY - self.startY;
                 self.angle = +Math.atan2(self.offsetY, self.offsetX) / Math.PI * 180;
                 moveDirection();
-                console.log(self.moveDirection);
+          
                 if (isItem() && self.moveDirection === "td") {
                     event.preventDefault();
                     self.slideItem.style.transform = `translate3d(${self.offsetX}px,0,0)`;
@@ -160,60 +154,38 @@
                 self.touchTime = self.endTime - self.startTime;
                 let boundary = window.innerWidth / 3;
                 if (self.offsetX !== 0 && isItem()) {
-                    self.slideItem.style.transition = "all .5s";
-                    // if (self.touchTime > 800) {  
                     if (self.offsetX >= boundary) {
                         go("1");
-                        // del();               
                     } else if (self.offsetX < -boundary) {
                         go("-1");
-                        // del();
                     } else {
                         go("0");
-
                     }
-                    // }else {
-                    //     if(self.offsetX>=50){
-                    //         go("1");
-                    //        // del();
-                    //     }else if(self.offsetX<-50){
-                    //         go("-1");
-                    //         //del();
-                    //     }else {
-                    //         go("0");
-
-                    //     }
-                    // }
                 }
             };
-
-            // let defaultEvent = function(){
-            //   return 
-            // };
-
 
             let moveDirection = function () {
                 if (self.countNum === 1) {
                     if (self.angle > -45 && self.angle < 45 || self.angle < -135 || self.angle > 135) {
-                        self.moveDirection="td";
-                        return;//横向滑动 transverse direction
+                        self.moveDirection = "td";
+                        return;//用户横向滑动 transverse direction
                     } else {
-                        self.moveDirection="md";
-                        return;//纵向滑动 machine direction
+                        self.moveDirection = "md";
+                        return;//用户纵向滑动 machine direction
                     }
                 }
-
-
             };
 
             let go = function (dir) {
-
+                self.slideItem.style.transition = "all .5s";
                 switch (dir) {
                     case "1":
                         self.slideItem.style.transform = `translate3d(${window.innerWidth}px,0,0)`;
+                        del.showUndo();
                         break;
                     case "-1":
                         self.slideItem.style.transform = `translate3d(-${window.innerWidth}px,0,0)`;
+                        del.showUndo();
                         break;
                     case "0":
                         self.slideItem.style.transform = `translate3d(0,0,0)`;
@@ -221,16 +193,28 @@
                 }
             };
 
-            let del = function () {
-                self.slideItem.addEventListener("webkitTransitionEnd", function () {
-                    self.slideItem.style.transition = "none";
-                    self.slideItem.style.transition = "height .5s ease .2s";
-                    self.slideItem.style.height = "63px";
-                    setTimeout(function () {
-                        self.slideItem.style.height = "0";
-                    }, 0);
-                })
+            let del = {
+                showUndo: function () {
+                    let t = 0;
+                    self.$undo.style.display = "block";
+                    clearInterval(self.t);
+                    self.t = setInterval(function () {
+                        t++;
+                        //undo5秒后消失
+                        if (t >= 5) {
+                            self.$undo.style.display = "none";
+                            clearInterval(self.t);
+                        }
+                    }, 1000);
+                },
 
+                heightSmaller: function(){
+
+                },
+
+                heightBigger: function(){
+
+                }
 
             };
 

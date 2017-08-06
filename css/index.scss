@@ -135,19 +135,26 @@ $blue:#2696d4;
     z-index: 1;
     font-size: 14px;
     background-color: rgba(43, 43, 43, 0.85);
-    display: flex;
+    display: none;
     color: #fff;
-    justify-content: space-between;
-    align-items: center;
     padding:0 10px;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+    p {
+        float:left;
+        line-height:40px;
+    }
+    #undoButton {
+        float:right;
+    }
+    
 }
 
 //内容编辑界面
 #editor {
+    z-index: 2;
     background-color: #fff;
     position: absolute;
     height: 100%;
@@ -155,9 +162,9 @@ $blue:#2696d4;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: all .3s ease;
-    transform: scale(0,0);
-    transform-origin: right bottom;
+    transition: all .2s ease;
+    transform: scaleY(0);
+    transform-origin: center bottom;
    
    
     
