@@ -41,21 +41,20 @@
                 case target.matches(".close"):
                     this.home();
                     break;
-                case target.matches(".title"):
-                    this.pullDown();
-                    break;
+                // case target.matches(".title"):
+                //     this.pullDown();
+                //     break;
             }
         },
 
         render() {
             this.$items.innerHTML = this.items.map(function (item, index) {
-                return `<div class= "item" data-index="${index}">
-                            <div class = "title" ">
-                                <p>${item.title}</p>
-                                <div class="deadLine">25days</div>
-                            </div>
-                            <div class = "detail">
-                                <p class="dp">${item.detail}</p>
+                return `<div class = "itemWrap" data-index="${index}">
+                            <div class= "item" data-index="${index}">
+                                <div class = "title" ">
+                                    <p>${item.title}</p>
+                                    <div class="deadLine">25days</div>
+                                </div>
                             </div>
                         </div>
                         `
@@ -106,82 +105,116 @@
             this.editor();
         },
 
-        pullDown() {
-            this.index = event.target.parentElement.dataset.index;
-            let cHeight = getComputedStyle(this.$detail[this.index]).height;
-            if (cHeight === '0px') {
-                this.$detail[this.index].style.height = "auto";
-            } else {
-                this.$detail[this.index].style.height = "0";
-            }
+        // pullDown() {
+        //     this.index = event.target.parentElement.dataset.index;
+        //     let cHeight = getComputedStyle(this.$detail[this.index]).height;
+        //     if (cHeight === '0px') {
+        //         this.$detail[this.index].style.height = "auto";
+        //     } else {
+        //         this.$detail[this.index].style.height = "0";
+        //     }
 
-        },
+        // },
 
 
         gesture() {
             let self = this;
+           
+            
             let startHandler = function (event) {
+                // self.c = 0;
+                // event.prototype.count = function(){
+                //     self.c++;
+                // }
                 if(isItem()){
+                    self.target = event.target;
                     self.slideItem = event.target.parentElement;
                 }
                 self.startX = event.touches[0].pageX;
+                self.startY = event.touches[0].pageY;
                 self.offsetX = 0;
                 self.startTime = +new Date();
 
             };
 
             let moveHandler = function (event) {
-                event.preventDefault();
+                // event.prototype.count();
+                // console.log(self.c);
+                //console.log(event);
                 self.offsetX = event.touches[0].pageX - self.startX;
-                if (isItem()) {
-                    event.target.parentElement.style.transform = `translate3d(${this.offsetX}px,0,0)`;
+                self.offsetY = event.touches[0].pageY - self.startY;
+                self.angle = +Math.atan2(self.offsetY, self.offsetX)/Math.PI*180;
+                console.log(moveDirection());
+                if (isItem()&&moveDirection()==="td") { 
+                    // event.preventDefault();
+                    self.slideItem.style.transform = `translate3d(${self.offsetX}px,0,0)`;
+                }else if(isItem()&&moveDirection()==="md"){
                 }
             };
 
             let endHandler = function (event) {
+               
                 self.endTime = +new Date();
                 self.touchTime = self.endTime - self.startTime;
                 let boundary = window.innerWidth / 3;
                 if (self.offsetX !== 0 && isItem()) {
-                    if (self.touchTime > 800) {  
+                    self.slideItem.style.transition ="all .5s";
+                    // if (self.touchTime > 800) {  
                         if (self.offsetX >= boundary) {
                             go("1"); 
-                            del();               
+                            // del();               
                         } else if (self.offsetX < -boundary) {
                             go("-1");
-                            del();
+                            // del();
                         } else {
                             go("0");
-                            del();           
+                                   
                         }
-                    }else {
-                        if(self.offsetX>=50){
-                            go("1");
-                            del();
-                        }else if(self.offsetX<-50){
-                            go("-1");
-                            del();
-                        }else {
-                            go("0");
-                            del();
-                        }
-                    }
+                    // }else {
+                    //     if(self.offsetX>=50){
+                    //         go("1");
+                    //        // del();
+                    //     }else if(self.offsetX<-50){
+                    //         go("-1");
+                    //         //del();
+                    //     }else {
+                    //         go("0");
+                        
+                    //     }
+                    // }
+                }  
+            };
+
+            // let defaultEvent = function(){
+            //   return 
+            // };
+
+
+            let moveDirection = function (){
+                if(self.angle>-45&&self.angle<45||self.angle<-135||self.angle>135){
+                    //self.moveDirection="td";
+                    return "td";//横向滑动 transverse direction
+                }else {
+                    //self.moveDirection="md";
+                    return "md";//纵向滑动 machine direction
                 }
+
             };
 
             let go = function(dir){
+
                 switch (dir){
                     case "1":
-                        event.target.parentElement.style.transform = `translate3d(${window.innerWidth}px,0,0)`;
+                        self.slideItem.style.transform = `translate3d(${window.innerWidth}px,0,0)`;
                         break;
                     case "-1":
-                        event.target.parentElement.style.transform = `translate3d(-${window.innerWidth}px,0,0)`;
+                        self.slideItem.style.transform = `translate3d(-${window.innerWidth}px,0,0)`;
                         break;
                     case "0":
-                        event.target.parentElement.style.transform = `translate3d(0,0,0)`;
+                        self.slideItem.style.transform = `translate3d(0,0,0)`;
                         break;
                 }
-            }
+            };
 
             let del = function(){
                 self.slideItem.addEventListener("webkitTransitionEnd",function(){
@@ -194,18 +227,18 @@
                 })
                 
 
-            }
+            };
 
             let isItem = function () {
-                return event.target.className === "title" || event.target.className === "detail";
+                return event.target.className === "title";
                 
-            }
+            };
 
 
 
-            this.$memo.addEventListener("touchstart", startHandler);
-            this.$memo.addEventListener("touchmove", moveHandler);
-            this.$memo.addEventListener("touchend", endHandler);
+            self.$memo.addEventListener("touchstart", startHandler);
+            self.$memo.addEventListener("touchmove", moveHandler);
+            self.$memo.addEventListener("touchend", endHandler);
         }
 
 

@@ -49,6 +49,13 @@ $blue:#2696d4;
 }
 
 //总体布局
+
+
+.itemWrap {
+    // height: 63px;
+    background-color: olivedrab;
+}
+
 #memo {
     width: 100%;
     display: flex;
@@ -63,11 +70,10 @@ $blue:#2696d4;
         .items {
             display: flex;
             flex-direction: column;
-            background-color: orangered;
             .item {
                 background-color: #fff;
                 box-shadow: 1px 1px 1px #eee;
-                transition: all .5s;
+                // transition: all .5s;
                 .title {
                     display: flex;
                     justify-content: space-between;
@@ -75,7 +81,7 @@ $blue:#2696d4;
                     height: 60px;
                     //border-left: 3px solid $blue;
                     
-                    margin-top: 3px;
+                    // margin-top: 3px;
                     padding:0 13px;
                 p {
                     pointer-events: none;
