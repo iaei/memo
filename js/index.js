@@ -119,14 +119,14 @@
 
         gesture() {
             let self = this;
-           
-            
+
+
             let startHandler = function (event) {
-                // self.c = 0;
+                self.countNum = 0;
                 // event.prototype.count = function(){
                 //     self.c++;
                 // }
-                if(isItem()){
+                if (isItem()) {
                     self.target = event.target;
                     self.slideItem = event.target.parentElement;
                 }
@@ -138,38 +138,40 @@
             };
 
             let moveHandler = function (event) {
-                // event.prototype.count();
-                // console.log(self.c);
-                //console.log(event);
+                event.count = function () {
+                    return self.countNum++;
+                }();
+                //event.count();
+                console.log(self.countNum);
                 self.offsetX = event.touches[0].pageX - self.startX;
                 self.offsetY = event.touches[0].pageY - self.startY;
-                self.angle = +Math.atan2(self.offsetY, self.offsetX)/Math.PI*180;
-                console.log(moveDirection());
-                if (isItem()&&moveDirection()==="td") { 
-                    // event.preventDefault();
+                self.angle = +Math.atan2(self.offsetY, self.offsetX) / Math.PI * 180;
+                moveDirection();
+                console.log(self.moveDirection);
+                if (isItem() && self.moveDirection === "td") {
+                    event.preventDefault();
                     self.slideItem.style.transform = `translate3d(${self.offsetX}px,0,0)`;
-                }else if(isItem()&&moveDirection()==="md"){
                 }
             };
 
             let endHandler = function (event) {
-               
+
                 self.endTime = +new Date();
                 self.touchTime = self.endTime - self.startTime;
                 let boundary = window.innerWidth / 3;
                 if (self.offsetX !== 0 && isItem()) {
-                    self.slideItem.style.transition ="all .5s";
+                    self.slideItem.style.transition = "all .5s";
                     // if (self.touchTime > 800) {  
-                        if (self.offsetX >= boundary) {
-                            go("1"); 
-                            // del();               
-                        } else if (self.offsetX < -boundary) {
-                            go("-1");
-                            // del();
-                        } else {
-                            go("0");
-                                   
-                        }
+                    if (self.offsetX >= boundary) {
+                        go("1");
+                        // del();               
+                    } else if (self.offsetX < -boundary) {
+                        go("-1");
+                        // del();
+                    } else {
+                        go("0");
+
+                    }
                     // }else {
                     //     if(self.offsetX>=50){
                     //         go("1");
@@ -179,10 +181,10 @@
                     //         //del();
                     //     }else {
                     //         go("0");
-                        
+
                     //     }
                     // }
-                }  
+                }
             };
 
             // let defaultEvent = function(){
@@ -190,20 +192,23 @@
             // };
 
 
-            let moveDirection = function (){
-                if(self.angle>-45&&self.angle<45||self.angle<-135||self.angle>135){
-                    //self.moveDirection="td";
-                    return "td";//横向滑动 transverse direction
-                }else {
-                    //self.moveDirection="md";
-                    return "md";//纵向滑动 machine direction
+            let moveDirection = function () {
+                if (self.countNum === 1) {
+                    if (self.angle > -45 && self.angle < 45 || self.angle < -135 || self.angle > 135) {
+                        self.moveDirection="td";
+                        return;//横向滑动 transverse direction
+                    } else {
+                        self.moveDirection="md";
+                        return;//纵向滑动 machine direction
+                    }
                 }
+
 
             };
 
-            let go = function(dir){
+            let go = function (dir) {
 
-                switch (dir){
+                switch (dir) {
                     case "1":
                         self.slideItem.style.transform = `translate3d(${window.innerWidth}px,0,0)`;
                         break;
@@ -216,22 +221,22 @@
                 }
             };
 
-            let del = function(){
-                self.slideItem.addEventListener("webkitTransitionEnd",function(){
+            let del = function () {
+                self.slideItem.addEventListener("webkitTransitionEnd", function () {
                     self.slideItem.style.transition = "none";
-                     self.slideItem.style.transition = "height .5s ease .2s";
+                    self.slideItem.style.transition = "height .5s ease .2s";
                     self.slideItem.style.height = "63px";
-                    setTimeout(function(){
+                    setTimeout(function () {
                         self.slideItem.style.height = "0";
-                    },0);
+                    }, 0);
                 })
-                
+
 
             };
 
             let isItem = function () {
                 return event.target.className === "title";
-                
+
             };
 
 
