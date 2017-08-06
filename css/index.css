@@ -47,7 +47,8 @@ p {
       flex-direction: column; }
       #memo > main .items .item {
         background-color: #fff;
-        box-shadow: 1px 1px 1px #eee; }
+        box-shadow: 1px 1px 1px #eee;
+        height: 63px; }
         #memo > main .items .item .title {
           display: flex;
           justify-content: space-between;
@@ -149,5 +150,19 @@ p {
       #editor main .edDetail textarea {
         flex: 1;
         resize: none; }
+    #editor main .edDeadline {
+      width: 100%;
+      height: 40px;
+      background-color: lightgreen; }
+      #editor main .edDeadline .year {
+        width: 100%/3;
+        height: 100%;
+        background-color: #fff; }
+      #editor main .edDeadline .month {
+        width: 100%/3;
+        height: 100%; }
+      #editor main .edDeadline .day {
+        width: 100%/3;
+        height: 100%; }
 
 /*# sourceMappingURL=index.css.map */

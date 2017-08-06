@@ -8,6 +8,9 @@
             this.index = null;
             this.$memo = document.querySelector("#memo");
             this.$memo.addEventListener("click", this);
+            // this.$memo.addEventListener("click", function(){
+            //     console.log(event.target.parentElement);
+            // });
 
 
 
@@ -21,7 +24,7 @@
             this.$editor = document.querySelector("#editor");
             this.$edTitle = document.querySelector("#edTitle");
             this.$edDetail = document.querySelector("#edDetail");
-
+            this.$undoButtton = document.querySelector("#undoButton");
 
             this.render();
         },
@@ -33,18 +36,15 @@
                     this.clear();
                     this.editor();
                     break;
-                case target.matches(".dp"):
-                    this.view(event);
-                    break;
                 case target.matches(".save"):
                     this.save();
                     break;
                 case target.matches(".close"):
                     this.home();
                     break;
-                // case target.matches(".title"):
-                //     this.pullDown();
-                //     break;
+                case target.matches(".title"):
+                    this.view();
+                    break;
             }
         },
 
@@ -81,8 +81,6 @@
             this.$editor.style.transform = 'scaleY(1)';
             this.$memo.style.height="100vh";
             this.$memo.style['overflow-y'] = 'hidden';
-
-   
         },
 
         save() {
@@ -107,7 +105,7 @@
         },
 
         view() {
-            this.index = event.target.parentElement.parentElement.getAttribute('data-index');
+            this.index = event.target.parentElement.getAttribute('data-index');
             this.$edTitle.value = this.items[this.index].title;
             this.$edDetail.value = this.items[this.index].detail;
             this.editor();
@@ -182,10 +180,12 @@
                     case "1":
                         self.slideItem.style.transform = `translate3d(${window.innerWidth}px,0,0)`;
                         del.showUndo();
+                        del.heightSmaller();
                         break;
                     case "-1":
                         self.slideItem.style.transform = `translate3d(-${window.innerWidth}px,0,0)`;
                         del.showUndo();
+                        del.heightSmaller()
                         break;
                     case "0":
                         self.slideItem.style.transform = `translate3d(0,0,0)`;
@@ -194,6 +194,7 @@
             };
 
             let del = {
+
                 showUndo: function () {
                     let t = 0;
                     self.$undo.style.display = "block";
@@ -209,12 +210,13 @@
                 },
 
                 heightSmaller: function(){
-
+                    let smallerHeight = function(){
+                        this.style.height="0";
+                        self.slideItem.removeEventListener("transitionend",smallerHeight);
+                    };
+                    self.slideItem.addEventListener("transitionend",smallerHeight);
+                     
                 },
-
-                heightBigger: function(){
-
-                }
 
             };
 
@@ -228,6 +230,11 @@
             self.$memo.addEventListener("touchstart", startHandler);
             self.$memo.addEventListener("touchmove", moveHandler);
             self.$memo.addEventListener("touchend", endHandler);
+            self.$undoButtton.addEventListener("click",function(){
+                self.slideItem.style.transition = "all .5s";
+                self.slideItem.style.height= '63px';
+                self.slideItem.style.transform = `translate3d(0,0,0)`;
+            });
         }
 
 
