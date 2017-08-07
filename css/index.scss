@@ -46,6 +46,24 @@ $blue:#2696d4;
     height: 50px;
     width: 100%;
     box-shadow: 1px 1px 6px #a2a2a2;//换成渐变
+    .hold{
+        box-sizing: border-box;
+        padding: 0 20px;
+        height: 100%;
+        display: none;
+        color: #fff;
+        .quitHold {
+            float: left;
+            line-height: 63px;
+            align-content: center;
+        }
+        .bin {
+            float: right;
+            line-height: 63px;
+            align-content: center;
+        }
+    }
+   
 }
 
 //总体布局

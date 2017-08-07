@@ -8,12 +8,9 @@
             this.index = null;
             this.$memo = document.querySelector("#memo");
             this.$memo.addEventListener("click", this);
-            // this.$memo.addEventListener("click", function(){
-            //     console.log(event.target.parentElement);
-            // });
+            
 
-
-
+            this.$toolBar = document.querySelector("#toolBar");
             this.$item = document.querySelectorAll(".item");
             this.$items = document.querySelector(".items");
             this.$newItem = document.querySelector("#newItem");
@@ -25,6 +22,7 @@
             this.$edTitle = document.querySelector("#edTitle");
             this.$edDetail = document.querySelector("#edDetail");
             this.$undoButtton = document.querySelector("#undoButton");
+            this.$hold = document.querySelector(".hold");
 
             this.render();
         },
@@ -54,7 +52,7 @@
                             <div class= "item" data-index="${index}">
                                 <div class = "title" ">
                                     <p>${item.title}</p>
-                                    <div class="deadLine">25days</div>
+                                    <div class="deadLine"></div>
                                 </div>
                             </div>
                         </div>
@@ -124,12 +122,19 @@
                     self.slideItem = event.target.parentElement;//被滑动的元素
                     self.ind = self.slideItem.dataset.index;
                     self.slideItem.style.transition = "";
+                    self.ishold= true;
                 }
 
                 self.startX = event.touches[0].pageX;
                 self.startY = event.touches[0].pageY;
                 self.offsetX = 0;
                 self.startTime = +new Date();
+
+                self.islongtouch = setTimeout(function(){
+                    if(self.ishold){
+                        longHold();
+                    }
+                },500);
 
             };
 
@@ -151,10 +156,11 @@
             };
 
             let endHandler = function (event) {
-
+                self.ishold= false;
+                clearTimeout(self.islongtouch);
                 self.endTime = +new Date();
                 self.touchTime = self.endTime - self.startTime;
-                let boundary = window.innerWidth / 3;
+                let boundary = window.innerWidth / 3;//滑动屏幕1/3的距离则表示删除
                 if (self.offsetX !== 0 && isItem() && self.moveDirection === "td") {
                     if (self.offsetX >= boundary) {
                         go("1");
@@ -167,6 +173,8 @@
             };
 
             let moveDirection = function () {
+                self.ishold=false;
+                //从用户滑动的一开始就确定滑动方向
                 if (self.countNum === 1) {
                     if (self.angle > -45 && self.angle < 45 || self.angle < -135 || self.angle > 135) {
                         self.moveDirection = "td";
@@ -250,17 +258,24 @@
 
             };
 
+            let undo = function(){
+                self.slideItem.classList.remove("waitBeDel");
+                self.slideItem.style.transition = "all .5s";
+                self.slideItem.style.height = '63px';
+                self.slideItem.style.transform = `translate3d(0,0,0)`;
+            };
+
+            let longHold = function(){
+                self.$toolBar.style.background = "grey";
+                self.$hold.style.display = "block";
+
+            }
 
 
             self.$memo.addEventListener("touchstart", startHandler);
             self.$memo.addEventListener("touchmove", moveHandler);
             self.$memo.addEventListener("touchend", endHandler);
-            self.$undoButtton.addEventListener("click", function () {
-                self.slideItem.classList.remove("waitBeDel");
-                self.slideItem.style.transition = "all .5s";
-                self.slideItem.style.height = '63px';
-                self.slideItem.style.transform = `translate3d(0,0,0)`;
-            });
+            self.$undoButtton.addEventListener("click", undo);
         }
 
 

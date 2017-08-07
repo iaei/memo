@@ -29,6 +29,20 @@ p {
   height: 50px;
   width: 100%;
   box-shadow: 1px 1px 6px #a2a2a2; }
+  #memo > header .hold {
+    box-sizing: border-box;
+    padding: 0 20px;
+    height: 100%;
+    display: none;
+    color: #fff; }
+    #memo > header .hold .quitHold {
+      float: left;
+      line-height: 63px;
+      align-content: center; }
+    #memo > header .hold .bin {
+      float: right;
+      line-height: 63px;
+      align-content: center; }
 
 .itemWrap {
   background-color: olivedrab; }
