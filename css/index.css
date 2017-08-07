@@ -127,7 +127,8 @@ p {
     color: #fff; }
   #editor main {
     display: flex;
-    flex-direction: column; }
+    flex-direction: column;
+    flex: 1; }
     #editor main .edTitle {
       height: 40px;
       background-color: #2696d4;

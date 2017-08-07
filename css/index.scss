@@ -184,6 +184,7 @@ $blue:#2696d4;
     main{
         display: flex;
         flex-direction: column;
+        flex: 1;
         .edTitle {
             height: 40px;
             background-color: $blue;

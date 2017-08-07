@@ -75,11 +75,11 @@
             this.$edDetail.value = null;
         },
 
-    
+
 
         editor() {
             this.$editor.style.transform = 'scaleY(1)';
-            this.$memo.style.height="100vh";
+            this.$memo.style.height = "100vh";
             this.$memo.style['overflow-y'] = 'hidden';
         },
 
@@ -94,11 +94,14 @@
                 this.items[this.index].title = this.$edTitle.value;
                 this.items[this.index].detail = this.$edDetail.value;
             }
-      
+
             this.storage();
             this.render();
             this.home();
         },
+
+
+
 
         storage() {
             localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(this.items));
@@ -120,8 +123,9 @@
                     self.target = event.target;
                     self.slideItem = event.target.parentElement;//被滑动的元素
                     self.ind = self.slideItem.dataset.index;
+                    self.slideItem.style.transition = "";
                 }
-                self.slideItem.style.transition = "";
+
                 self.startX = event.touches[0].pageX;
                 self.startY = event.touches[0].pageY;
                 self.offsetX = 0;
@@ -134,12 +138,12 @@
                 event.count = function () {
                     return self.countNum++;
                 }();
-            
+
                 self.offsetX = event.touches[0].pageX - self.startX;
                 self.offsetY = event.touches[0].pageY - self.startY;
                 self.angle = +Math.atan2(self.offsetY, self.offsetX) / Math.PI * 180;
                 moveDirection();
-          
+                console.log(self.moveDirection);
                 if (isItem() && self.moveDirection === "td") {
                     event.preventDefault();
                     self.slideItem.style.transform = `translate3d(${self.offsetX}px,0,0)`;
@@ -151,7 +155,7 @@
                 self.endTime = +new Date();
                 self.touchTime = self.endTime - self.startTime;
                 let boundary = window.innerWidth / 3;
-                if (self.offsetX !== 0 && isItem()) {
+                if (self.offsetX !== 0 && isItem() && self.moveDirection === "td") {
                     if (self.offsetX >= boundary) {
                         go("1");
                     } else if (self.offsetX < -boundary) {
@@ -180,12 +184,14 @@
                     case "1":
                         self.slideItem.style.transform = `translate3d(${window.innerWidth}px,0,0)`;
                         del.showUndo();
+                        self.slideItem.classList.add("waitBeDel");
                         del.heightSmaller();
                         break;
                     case "-1":
                         self.slideItem.style.transform = `translate3d(-${window.innerWidth}px,0,0)`;
                         del.showUndo();
-                        del.heightSmaller()
+                        self.slideItem.classList.add("waitBeDel");
+                        del.heightSmaller();
                         break;
                     case "0":
                         self.slideItem.style.transform = `translate3d(0,0,0)`;
@@ -196,26 +202,45 @@
             let del = {
 
                 showUndo: function () {
+
                     let t = 0;
                     self.$undo.style.display = "block";
+
+
                     clearInterval(self.t);
                     self.t = setInterval(function () {
                         t++;
                         //undo5秒后消失
                         if (t >= 5) {
+                            this.delElement();
                             self.$undo.style.display = "none";
                             clearInterval(self.t);
                         }
-                    }, 1000);
+                    }.bind(this), 1000);
                 },
 
-                heightSmaller: function(){
-                    let smallerHeight = function(){
-                        this.style.height="0";
-                        self.slideItem.removeEventListener("transitionend",smallerHeight);
+                heightSmaller: function () {
+                    let smallerHeight = function () {
+                        this.style.height = "0";
+                        self.slideItem.removeEventListener("transitionend", smallerHeight);
                     };
-                    self.slideItem.addEventListener("transitionend",smallerHeight);
-                     
+                    self.slideItem.addEventListener("transitionend", smallerHeight);
+
+                },
+
+                delElement: function () {
+                    self.$waitBeDel = document.querySelectorAll(".waitBeDel");
+                    console.log(self.$waitBeDel);
+                    self.$waitBeDel.forEach(function (element) {
+                        let i = element.dataset.index;
+                        self.items[i].waitBeDel = true;
+                    }, this);
+                    self.items=self.items.filter(function(element){
+                        return element.waitBeDel===undefined;         
+                    })
+                    self.storage();
+                    self.render();
+
                 },
 
             };
@@ -230,9 +255,10 @@
             self.$memo.addEventListener("touchstart", startHandler);
             self.$memo.addEventListener("touchmove", moveHandler);
             self.$memo.addEventListener("touchend", endHandler);
-            self.$undoButtton.addEventListener("click",function(){
+            self.$undoButtton.addEventListener("click", function () {
+                self.slideItem.classList.remove("waitBeDel");
                 self.slideItem.style.transition = "all .5s";
-                self.slideItem.style.height= '63px';
+                self.slideItem.style.height = '63px';
                 self.slideItem.style.transform = `translate3d(0,0,0)`;
             });
         }
