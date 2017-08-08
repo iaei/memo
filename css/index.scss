@@ -256,3 +256,32 @@ $blue:#2696d4;
     }
 
 }
+
+.inputNewItem {
+    height: 50px;
+    box-sizing: border-box;
+    padding: 5px;
+    background-color: darkkhaki;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    #inputNewItem {
+        height: 100%;
+        width: 90%;
+    }
+    #send {
+        height: 20px;
+        width: 20px;
+        background-color: red;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        margin-left: 10px;
+
+    }
+}

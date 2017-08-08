@@ -7,8 +7,8 @@
             this.items = JSON.parse(localStorage.getItem(this.LOCAL_STORAGE_KEY)) || [];
             this.index = null;
             this.$memo = document.querySelector("#memo");
-            this.$memo.addEventListener("click", this);
-            
+
+
 
             this.$toolBar = document.querySelector("#toolBar");
             this.$item = document.querySelectorAll(".item");
@@ -23,6 +23,12 @@
             this.$edDetail = document.querySelector("#edDetail");
             this.$undoButtton = document.querySelector("#undoButton");
             this.$hold = document.querySelector(".hold");
+            this.$quitHold = document.querySelector(".quitHold");
+            this.$bin = document.querySelector(".bin");
+
+            this.$memo.addEventListener("click", this);
+
+
 
             this.render();
         },
@@ -40,16 +46,13 @@
                 case target.matches(".close"):
                     this.home();
                     break;
-                case target.matches(".title"):
-                    this.view();
-                    break;
             }
         },
 
         render() {
             this.$items.innerHTML = this.items.map(function (item, index) {
                 return `<div class = "itemWrap" data-index="${index}">
-                            <div class= "item" data-index="${index}">
+                            <div class= "item" data-index="${index}" check="-1">
                                 <div class = "title" ">
                                     <p>${item.title}</p>
                                     <div class="deadLine"></div>
@@ -106,23 +109,29 @@
         },
 
         view() {
-            this.index = event.target.parentElement.getAttribute('data-index');
-            this.$edTitle.value = this.items[this.index].title;
-            this.$edDetail.value = this.items[this.index].detail;
-            this.editor();
+            memo.index = event.target.parentElement.getAttribute('data-index');
+
+            memo.$edTitle.value = memo.items[memo.index].title;
+            memo.$edDetail.value = memo.items[memo.index].detail;
+            memo.editor();
         },
 
         //主屏幕手势操作
         gesture() {
             let self = this;
+
+            let init = function () {
+                self.target = event.target;
+                self.slideItem = event.target.parentElement;//被滑动的元素
+                self.ind = self.slideItem.dataset.index;
+            };
+
             let startHandler = function (event) {
                 self.countNum = 0;
                 if (isItem()) {
-                    self.target = event.target;
-                    self.slideItem = event.target.parentElement;//被滑动的元素
-                    self.ind = self.slideItem.dataset.index;
+                    init();
                     self.slideItem.style.transition = "";
-                    self.ishold= true;
+                    self.ishold = true;
                 }
 
                 self.startX = event.touches[0].pageX;
@@ -130,11 +139,13 @@
                 self.offsetX = 0;
                 self.startTime = +new Date();
 
-                self.islongtouch = setTimeout(function(){
-                    if(self.ishold){
-                        longHold();
+                self.islongtouch = setTimeout(function () {
+                    if (self.ishold) {
+                        self.slideItem.style.color = "blue";//笔记被选中时做
+                        self.slideItem.classList.add("waitBeDel");
+                        multiSelectMode();
                     }
-                },500);
+                }, 500);
 
             };
 
@@ -156,7 +167,7 @@
             };
 
             let endHandler = function (event) {
-                self.ishold= false;
+                self.ishold = false;
                 clearTimeout(self.islongtouch);
                 self.endTime = +new Date();
                 self.touchTime = self.endTime - self.startTime;
@@ -173,7 +184,7 @@
             };
 
             let moveDirection = function () {
-                self.ishold=false;
+                self.ishold = false;
                 //从用户滑动的一开始就确定滑动方向
                 if (self.countNum === 1) {
                     if (self.angle > -45 && self.angle < 45 || self.angle < -135 || self.angle > 135) {
@@ -243,8 +254,8 @@
                         let i = element.dataset.index;
                         self.items[i].waitBeDel = true;
                     }, this);
-                    self.items=self.items.filter(function(element){
-                        return element.waitBeDel===undefined;         
+                    self.items = self.items.filter(function (element) {
+                        return element.waitBeDel === undefined;
                     })
                     self.storage();
                     self.render();
@@ -258,23 +269,64 @@
 
             };
 
-            let undo = function(){
+            let undo = function () {
                 self.slideItem.classList.remove("waitBeDel");
                 self.slideItem.style.transition = "all .5s";
                 self.slideItem.style.height = '63px';
                 self.slideItem.style.transform = `translate3d(0,0,0)`;
             };
 
-            let longHold = function(){
+            let multiSelectMode = function () {
                 self.$toolBar.style.background = "grey";
                 self.$hold.style.display = "block";
+                self.$memo.removeEventListener("touchstart", startHandler);
+                self.$memo.removeEventListener("touchmove", moveHandler);
+                self.$memo.removeEventListener("touchend", endHandler);
+                self.$items.removeEventListener("click", self.view);
+                self.$items.addEventListener("click", multiSelect);
 
-            }
+                self.$quitHold.addEventListener("click", normalMode);
+                self.$bin.addEventListener("click", bin);
 
 
-            self.$memo.addEventListener("touchstart", startHandler);
-            self.$memo.addEventListener("touchmove", moveHandler);
-            self.$memo.addEventListener("touchend", endHandler);
+            };
+
+            let bin = function () {
+                confirm("确定删除这些便签吗？");
+                del.delElement();
+                normalMode();
+            };
+
+            let multiSelect = function () {
+                if (isItem()) {
+                    init();
+                    //单击选中，再单击取消选中
+                    event.check = function () {
+                        console.log(self.slideItem);
+                        var ischeck = +self.slideItem.getAttribute("check") * -1;
+                        self.slideItem.setAttribute("check", `${ischeck}`);
+                    }();
+                    if (self.slideItem.getAttribute("check") === "1") {
+                        self.slideItem.style.color = "blue";//笔记被选中时做
+                        self.slideItem.classList.add("waitBeDel");
+                    } else if (self.slideItem.getAttribute("check") === "-1") {
+                        self.slideItem.style.color = "black";//笔记未选中时做
+                        self.slideItem.classList.remove("waitBeDel");
+                    }
+                }
+            };
+
+            let normalMode = function () {
+                self.$toolBar.style.background = "#fff";
+                self.$hold.style.display = "none";
+                self.render();
+                self.$memo.addEventListener("touchstart", startHandler);
+                self.$memo.addEventListener("touchmove", moveHandler);
+                self.$memo.addEventListener("touchend", endHandler);
+                self.$items.addEventListener("click", self.view);
+            };
+
+            normalMode();
             self.$undoButtton.addEventListener("click", undo);
         }
 
