@@ -154,6 +154,7 @@
                 self.islongtouch = setTimeout(function () {
                     if (self.ishold) {
                         self.slideItem.firstElementChild.style.backgroundColor="#46e8b6";//笔记被选中时做
+                        self.slideItem.setAttribute("check","1");
                         self.slideItem.classList.add("waitBeDel");
                         multiSelectMode();
                     }
