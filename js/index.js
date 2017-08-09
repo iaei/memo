@@ -13,16 +13,16 @@
             this.$toolBar = document.querySelector("#toolBar");
             this.$item = document.querySelectorAll(".item");
             this.$items = document.querySelector(".items");
-            this.$newItem = document.querySelector("#newItem");
             this.$title = document.querySelectorAll(".title")
-            this.$detail = document.querySelectorAll(".detail");
             this.$undo = document.querySelector("#undo");
+            this.$homeMain = document.querySelector("#homeMain");
 
             this.$editor = document.querySelector("#editor");
             this.$edTitle = document.querySelector("#edTitle");
             this.$edDetail = document.querySelector("#edDetail");
             this.$undoButtton = document.querySelector("#undoButton");
             this.$hold = document.querySelector(".hold");
+            this.$appName = document.querySelector("#appName");
             this.$quitHold = document.querySelector(".quitHold");
             this.$bin = document.querySelector(".bin");
             this.$send = document.querySelector("#send");
@@ -30,6 +30,7 @@
             this.$confirmDelWrap = document.querySelector(".confirmDelWrap");
             this.$confirmDel = document.querySelector("#true");
             this.$giveUpDel = document.querySelector("#false");
+            this.$blank = document.querySelector(".blank");
 
             this.$memo.addEventListener("click", this);
 
@@ -58,6 +59,12 @@
         },
 
         render() {
+            console.log(this.items.length === 0);
+            if (this.items.length === 0) {
+               this.$blank.style.display="flex";
+            } else {
+                this.$blank.style.display="none";
+            }
             this.$items.innerHTML = this.items.map(function (item, index) {
                 return `<div class = "itemWrap" data-index="${index}">
                             <div class= "item" data-index="${index}" check="-1">
@@ -69,7 +76,6 @@
                         </div>
                         `
             }).join('');
-            this.$detail = document.querySelectorAll(".detail");
         },
 
         home() {
@@ -146,7 +152,7 @@
 
                 self.islongtouch = setTimeout(function () {
                     if (self.ishold) {
-                        self.slideItem.style.color = "blue";//笔记被选中时做
+                        self.slideItem.style.color = "#1378f0";//笔记被选中时做
                         self.slideItem.classList.add("waitBeDel");
                         multiSelectMode();
                     }
@@ -230,8 +236,8 @@
                     clearInterval(self.t);
                     self.t = setInterval(function () {
                         t++;
-                        //undo5秒后消失
-                        if (t >= 5) {
+                        //undo3秒后消失
+                        if (t >= 3) {
                             this.delElement();
                             self.$undo.style.display = "none";
                             clearInterval(self.t);
@@ -276,31 +282,36 @@
             };
 
             let multiSelectMode = function () {
-                self.$toolBar.style.background = "grey";
-                self.$hold.style.display = "block";
+                self.$toolBar.style.background = "#fff";
+                self.$hold.style.display = "flex";
+                self.$appName.style.display = "none";
                 self.$memo.removeEventListener("touchstart", startHandler);
                 self.$memo.removeEventListener("touchmove", moveHandler);
                 self.$memo.removeEventListener("touchend", endHandler);
                 self.$items.removeEventListener("click", self.view);
                 self.$items.addEventListener("click", multiSelect);
-                
+
 
                 self.$quitHold.addEventListener("click", normalMode);
-                self.$bin.addEventListener("click", bin);
+                self.$bin.addEventListener("click", function () {
+                    self.$confirmDelWrap.style.display = "flex";
+                });
+
+                self.$confirmDelWrap.addEventListener("click", bin);
             };
 
             let bin = function () {
-                self.$confirmDelWrap.style.display="flex";
-                self.$confirmDel.addEventListener("click",function(){
+                if (event.target.dataset.confirm === "true") {
                     del.delElement();
-                    self.$confirmDelWrap.style.display="none";
+                    self.$confirmDelWrap.style.display = "none";
                     normalMode();
-                });
-                self.$giveUpDel.addEventListener("click",function(){
-                    self.$confirmDelWrap.style.display="none";
-                });
+                } else if (event.target.dataset.confirm === "false") {
+                    self.$confirmDelWrap.style.display = "none";
+                } else if (event.target.matches(".confirmDelWrap")) {
+                    self.$confirmDelWrap.style.display = "none";
+                }
             };
-         
+
 
             let multiSelect = function () {
                 if (isItem()) {
@@ -312,7 +323,7 @@
                         self.slideItem.setAttribute("check", `${ischeck}`);
                     }();
                     if (self.slideItem.getAttribute("check") === "1") {
-                        self.slideItem.style.color = "blue";//笔记被选中时做
+                        self.slideItem.style.color = "#1378f0";//笔记被选中时做
                         self.slideItem.classList.add("waitBeDel");
                     } else if (self.slideItem.getAttribute("check") === "-1") {
                         self.slideItem.style.color = "black";//笔记未选中时做
@@ -322,8 +333,10 @@
             };
 
             let normalMode = function () {
-                self.$toolBar.style.background = "#fff";
+                self.$toolBar.style.background = "#1378f0";
                 self.$hold.style.display = "none";
+                self.$appName.style.display = "block";
+                self.$items.removeEventListener("click", multiSelect);
                 self.render();
                 self.$memo.addEventListener("touchstart", startHandler);
                 self.$memo.addEventListener("touchmove", moveHandler);

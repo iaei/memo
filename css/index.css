@@ -1,7 +1,14 @@
+@charset "UTF-8";
 body, html {
   width: 100%;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  font-family: "微软雅黑";
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -ms-user-select: none;
+  -moz-user-select: none; }
 
 input, textarea {
   outline: none;
@@ -25,16 +32,26 @@ p {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #fff;
+  background-color: #1378f0;
+  z-index: 1;
   height: 50px;
   width: 100%;
-  box-shadow: 1px 1px 6px #a2a2a2; }
+  box-shadow: 1px 1px 6px #a2a2a2;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 20px; }
+  #memo > header p {
+    display: block;
+    color: #fff; }
   #memo > header .hold {
     box-sizing: border-box;
-    padding: 0 20px;
     height: 100%;
     display: none;
-    color: #fff; }
+    color: #0b0f1b;
+    font-size: 12px;
+    justify-content: space-between;
+    flex: 1; }
     #memo > header .hold .quitHold {
       float: left;
       line-height: 63px;
@@ -45,78 +62,69 @@ p {
       align-content: center; }
 
 .itemWrap {
-  background-color: olivedrab; }
+  background-color: #d0e1e8; }
 
 #memo {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 50px; }
   #memo > main {
     margin-top: 50px;
-    flex: 1; }
+    flex: 1;
+    background-color: #f7f7f7; }
+    #memo > main .blank {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 30px; }
+      #memo > main .blank p {
+        color: #8a92a1; }
     #memo > main .items {
       display: flex;
-      flex-direction: column; }
-      #memo > main .items .item {
+      flex-direction: column;
+      font-size: 14px; }
+      #memo > main .items .itemWrap .item {
         background-color: #fff;
-        box-shadow: 1px 1px 1px #eee;
-        height: 63px; }
-        #memo > main .items .item .title {
+        height: 62px; }
+        #memo > main .items .itemWrap .item .title {
           display: flex;
           justify-content: space-between;
           align-items: center;
           height: 60px;
           padding: 0 13px; }
-          #memo > main .items .item .title p {
-            pointer-events: none; }
-          #memo > main .items .item .title .deadLine {
-            font-size: 14px;
-            pointer-events: none; }
-        #memo > main .items .item .detail {
-          overflow: hidden;
-          box-sizing: border-box;
-          font-size: 14px;
-          color: #666;
-          height: 0;
-          background-color: rgba(0, 0, 0, 0.02); }
-          #memo > main .items .item .detail p {
-            padding: 13px;
-            pointer-events: none; }
-
-#newItem {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  background-color: #e01c1c;
-  box-shadow: 2px 2px 5px #999;
-  position: fixed;
-  bottom: 20px;
-  right: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  font-size: 22px; }
+          #memo > main .items .itemWrap .item .title p {
+            pointer-events: none;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden; }
 
 #undo {
-  height: 40px;
+  height: 50px;
   z-index: 1;
   font-size: 14px;
-  background-color: rgba(43, 43, 43, 0.85);
+  background-color: #46e8b6;
   display: none;
-  color: #fff;
-  padding: 0 10px;
+  color: #0b0f1b;
+  padding: 0 20px;
   position: fixed;
-  bottom: 0;
+  bottom: 0px;
   left: 0;
   right: 0; }
   #undo p {
     float: left;
-    line-height: 40px; }
+    line-height: 50px; }
   #undo #undoButton {
-    float: right; }
+    float: right;
+    color: yellow;
+    font-weight: bolder; }
 
 #editor {
   z-index: 2;
@@ -132,7 +140,7 @@ p {
   transform-origin: center bottom; }
   #editor header {
     height: 40px;
-    background-color: #2696d4;
+    background-color: #1378f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -145,13 +153,13 @@ p {
     flex: 1; }
     #editor main .edTitle {
       height: 40px;
-      background-color: #2696d4;
+      background-color: #1378f0;
       padding: 3px 10px;
       color: #fff; }
       #editor main .edTitle input {
         height: 100%;
         width: 100%;
-        background-color: #2696d4;
+        background-color: #1378f0;
         font-size: 16px;
         color: #fff; }
         #editor main .edTitle input::-webkit-input-placeholder {
@@ -183,30 +191,34 @@ p {
 .inputNewItem {
   height: 50px;
   box-sizing: border-box;
-  padding: 5px;
-  background-color: darkkhaki;
   display: flex;
   align-items: center;
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0; }
+  bottom: 0;
+  box-shadow: 1px -1px 4px #ccc;
+  background-color: #fff; }
   .inputNewItem #inputArea {
     height: 100%;
-    width: 90%; }
+    width: 90%;
+    font-size: 16px;
+    padding-left: 20px;
+    box-sizing: border-box; }
   .inputNewItem #send {
-    height: 20px;
+    height: 100%;
     width: 20px;
-    background-color: red;
-    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fff;
-    margin-left: 10px; }
+    color: #0b0f1b;
+    padding: 0 15px; }
+    .inputNewItem #send i {
+      pointer-events: none; }
 
 .confirmDelWrap {
-  position: absolute;
+  position: fixed;
+  z-index: 2;
   top: 0;
   left: 0;
   right: 0;
@@ -226,9 +238,13 @@ p {
     flex-direction: column;
     justify-content: space-between;
     padding: 15px; }
+    .confirmDelWrap .confirmDel p {
+      color: #0b0f1b; }
     .confirmDelWrap .confirmDel .confirm {
       display: flex;
-      justify-content: flex-end; }
+      justify-content: flex-end;
+      color: #1378f0;
+      font-size: 14px; }
       .confirmDelWrap .confirmDel .confirm #true {
         margin-left: 20px; }
 

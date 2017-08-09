@@ -3,7 +3,15 @@ body,html{
     width: 100%;
     margin: 0;
     padding: 0;
+    font-family: "微软雅黑";
+    -webkit-tap-highlight-color:transparent;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -ms-user-select: none; 
+    -moz-user-select: none;
+  
 }
+
 
 input,textarea {
     outline: none;
@@ -13,9 +21,19 @@ input,textarea {
 
 p {
     margin: 0;
+    
 }
 //自定义变量
-$blue:#2696d4;
+$blue:#1378f0;
+$light-blue:#7ddee9;
+$grey-blue:#d0e1e8;
+$green:#46e8b6;
+$black:#0b0f1b;
+$grey:#8a92a1;
+$white:#f3f3f3;
+
+
+
 
 
 
@@ -36,26 +54,38 @@ $blue:#2696d4;
     height: 0;
 }
 
-
 //header样式
 #memo>header{
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #fff;
+    background-color: $blue;
+    z-index: 1;
     height: 50px;
     width: 100%;
     box-shadow: 1px 1px 6px #a2a2a2;//换成渐变
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding:0 20px;
+    
+    p {
+        display: block;
+        color: #fff;
+    }
     .hold{
         box-sizing: border-box;
-        padding: 0 20px;
         height: 100%;
         display: none;
-        color: #fff;
+        color: $black;
+        font-size: 12px;
+        justify-content: space-between;
+        flex: 1;
         .quitHold {
             float: left;
             line-height: 63px;
             align-content: center;
+            
         }
         .bin {
             float: right;
@@ -71,7 +101,7 @@ $blue:#2696d4;
 
 .itemWrap {
     // height: 63px;
-    background-color: olivedrab;
+    background-color: $grey-blue;
 }
 
 #memo {
@@ -80,92 +110,74 @@ $blue:#2696d4;
     flex-direction: column;
     justify-content: space-between;
     overflow-x: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom:50px;
     
     &>main {
         margin-top:50px;
         flex: 1;
-        
+        background-color: rgb(247, 247, 247);   
+        .blank{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            p {
+                color: $grey;
+            }
+        } 
         .items {
             display: flex;
             flex-direction: column;
-            .item {
-                background-color: #fff;
-                box-shadow: 1px 1px 1px #eee;
-                height: 63px;
-                .title {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    height: 60px;
-                    //border-left: 3px solid $blue;
-                    
-                    // margin-top: 3px;
-                    padding:0 13px;
-                p {
-                    pointer-events: none;
+            font-size: 14px;
+            .itemWrap{
+                .item {
+                    background-color: #fff;
+                    height: 62px;//高度要为数值，不然将导致高度减小动画失效
+                    .title {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        height: 60px;
+                        padding:0 13px;
+                        p {
+                            pointer-events: none;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                        }
+                    }   
                 }
-                .deadLine {
-                    font-size: 14px;
-                    pointer-events: none;
-                
-                   
-                }
-            }
-            .detail {
-                overflow: hidden;
-                box-sizing: border-box;
-                font-size: 14px;
-                color: #666;
-                height: 0;
-                background-color: rgba(0, 0, 0, 0.02);
-                p {
-                    padding: 13px;
-                    pointer-events: none;
-                }
-            }
             }
         
         }
     }
 }
 
-//新建便签图标样式
-#newItem {
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    background-color: #e01c1c;
-    box-shadow: 2px 2px 5px #999;
-    position: fixed;
-    bottom: 20px;
-    right: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-size: 22px;
-    
-}
-
-//undo 
 #undo {
-    height: 40px;
+    height: 50px;
     z-index: 1;
     font-size: 14px;
-    background-color: rgba(43, 43, 43, 0.85);
+    background-color: $green;
     display: none;
-    color: #fff;
-    padding:0 10px;
+    color: $black;
+    padding:0 20px;
     position: fixed;
-    bottom: 0;
+    bottom: 0px;
     left: 0;
     right: 0;
     p {
         float:left;
-        line-height:40px;
+        line-height:50px;
     }
     #undoButton {
         float:right;
+        color: yellow;
+        font-weight: bolder;
     }
     
 }
@@ -260,34 +272,39 @@ $blue:#2696d4;
 .inputNewItem {
     height: 50px;
     box-sizing: border-box;
-    padding: 5px;
-    background-color: darkkhaki;
     display: flex;
     align-items: center;
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
+    box-shadow: 1px -1px 4px #ccc;
+    background-color: #fff;
     #inputArea {
         height: 100%;
         width: 90%;
+        font-size: 16px;
+        padding-left: 20px;
+        box-sizing: border-box;
     }
     #send {
-        height: 20px;
+        height: 100%;
         width: 20px;
-        background-color: red;
-        border-radius: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: #fff;
-        margin-left: 10px;
+        color: $black;
+        padding:0 15px;
+        i {
+            pointer-events: none;
+        }
 
     }
 }
 
 .confirmDelWrap {
-    position: absolute;
+    position: fixed;
+    z-index: 2;
     top: 0;
     left: 0;
     right: 0;
@@ -308,9 +325,14 @@ $blue:#2696d4;
         flex-direction: column;
         justify-content: space-between;
         padding: 15px;
+        p {
+            color: $black;
+        } 
         .confirm {
             display: flex;
             justify-content: flex-end;
+            color: $blue;
+            font-size: 14px;
             #true {
                 margin-left: 20px;
             }
