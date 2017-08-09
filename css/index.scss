@@ -268,7 +268,7 @@ $blue:#2696d4;
     left: 0;
     right: 0;
     bottom: 0;
-    #inputNewItem {
+    #inputArea {
         height: 100%;
         width: 90%;
     }
@@ -285,3 +285,35 @@ $blue:#2696d4;
 
     }
 }
+
+.confirmDelWrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    .confirmDel {
+        position: absolute;
+        box-sizing: border-box;
+        border-radius: 2px;
+        height: 90px;
+        width: 300px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 15px;
+        .confirm {
+            display: flex;
+            justify-content: flex-end;
+            #true {
+                margin-left: 20px;
+            }
+        }
+    }
+}   

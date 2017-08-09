@@ -25,6 +25,11 @@
             this.$hold = document.querySelector(".hold");
             this.$quitHold = document.querySelector(".quitHold");
             this.$bin = document.querySelector(".bin");
+            this.$send = document.querySelector("#send");
+            this.$inputArea = document.querySelector("#inputArea");
+            this.$confirmDelWrap = document.querySelector(".confirmDelWrap");
+            this.$confirmDel = document.querySelector("#true");
+            this.$giveUpDel = document.querySelector("#false");
 
             this.$memo.addEventListener("click", this);
 
@@ -45,6 +50,9 @@
                     break;
                 case target.matches(".close"):
                     this.home();
+                    break;
+                case target.matches("#send"):
+                    this.new();
                     break;
             }
         },
@@ -76,33 +84,30 @@
             this.$edDetail.value = null;
         },
 
-
-
         editor() {
             this.$editor.style.transform = 'scaleY(1)';
             this.$memo.style.height = "100vh";
             this.$memo.style['overflow-y'] = 'hidden';
         },
 
-        save() {
-            if ((this.$edTitle.value.length > 0 || this.$edDetail.value.length > 0) && this.index === null) {
-                this.items.push({ title: this.$edTitle.value, detail: this.$edDetail.value });
-            } else {
-                this.home();
+        new() {
+            if (this.$inputArea.value.length > 0) {
+                this.items.unshift({ title: this.$inputArea.value, detail: "" });
+                this.storage();
+                this.render();
+                this.$inputArea.value = "";
             }
 
-            if (this.index !== null) {
-                this.items[this.index].title = this.$edTitle.value;
-                this.items[this.index].detail = this.$edDetail.value;
-            }
+        },
+
+        save() {
+            this.items[this.index].title = this.$edTitle.value;
+            this.items[this.index].detail = this.$edDetail.value;
 
             this.storage();
             this.render();
             this.home();
         },
-
-
-
 
         storage() {
             localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(this.items));
@@ -159,7 +164,7 @@
                 self.offsetY = event.touches[0].pageY - self.startY;
                 self.angle = +Math.atan2(self.offsetY, self.offsetX) / Math.PI * 180;
                 moveDirection();
-                console.log(self.moveDirection);
+                // console.log(self.moveDirection);
                 if (isItem() && self.moveDirection === "td") {
                     event.preventDefault();
                     self.slideItem.style.transform = `translate3d(${self.offsetX}px,0,0)`;
@@ -219,13 +224,9 @@
             };
 
             let del = {
-
                 showUndo: function () {
-
                     let t = 0;
                     self.$undo.style.display = "block";
-
-
                     clearInterval(self.t);
                     self.t = setInterval(function () {
                         t++;
@@ -249,7 +250,7 @@
 
                 delElement: function () {
                     self.$waitBeDel = document.querySelectorAll(".waitBeDel");
-                    console.log(self.$waitBeDel);
+                    // console.log(self.$waitBeDel);
                     self.$waitBeDel.forEach(function (element) {
                         let i = element.dataset.index;
                         self.items[i].waitBeDel = true;
@@ -259,14 +260,11 @@
                     })
                     self.storage();
                     self.render();
-
                 },
-
             };
 
             let isItem = function () {
                 return event.target.className === "title";
-
             };
 
             let undo = function () {
@@ -274,6 +272,7 @@
                 self.slideItem.style.transition = "all .5s";
                 self.slideItem.style.height = '63px';
                 self.slideItem.style.transform = `translate3d(0,0,0)`;
+                self.$undo.style.display = "none";
             };
 
             let multiSelectMode = function () {
@@ -284,25 +283,31 @@
                 self.$memo.removeEventListener("touchend", endHandler);
                 self.$items.removeEventListener("click", self.view);
                 self.$items.addEventListener("click", multiSelect);
+                
 
                 self.$quitHold.addEventListener("click", normalMode);
                 self.$bin.addEventListener("click", bin);
-
-
             };
 
             let bin = function () {
-                confirm("确定删除这些便签吗？");
-                del.delElement();
-                normalMode();
+                self.$confirmDelWrap.style.display="flex";
+                self.$confirmDel.addEventListener("click",function(){
+                    del.delElement();
+                    self.$confirmDelWrap.style.display="none";
+                    normalMode();
+                });
+                self.$giveUpDel.addEventListener("click",function(){
+                    self.$confirmDelWrap.style.display="none";
+                });
             };
+         
 
             let multiSelect = function () {
                 if (isItem()) {
                     init();
                     //单击选中，再单击取消选中
                     event.check = function () {
-                        console.log(self.slideItem);
+                        // console.log(self.slideItem);
                         var ischeck = +self.slideItem.getAttribute("check") * -1;
                         self.slideItem.setAttribute("check", `${ischeck}`);
                     }();
@@ -329,7 +334,6 @@
             normalMode();
             self.$undoButtton.addEventListener("click", undo);
         }
-
 
     }
 

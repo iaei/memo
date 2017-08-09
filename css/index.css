@@ -191,7 +191,7 @@ p {
   left: 0;
   right: 0;
   bottom: 0; }
-  .inputNewItem #inputNewItem {
+  .inputNewItem #inputArea {
     height: 100%;
     width: 90%; }
   .inputNewItem #send {
@@ -204,5 +204,32 @@ p {
     align-items: center;
     color: #fff;
     margin-left: 10px; }
+
+.confirmDelWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+  justify-content: center;
+  align-items: center; }
+  .confirmDelWrap .confirmDel {
+    position: absolute;
+    box-sizing: border-box;
+    border-radius: 2px;
+    height: 90px;
+    width: 300px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px; }
+    .confirmDelWrap .confirmDel .confirm {
+      display: flex;
+      justify-content: flex-end; }
+      .confirmDelWrap .confirmDel .confirm #true {
+        margin-left: 20px; }
 
 /*# sourceMappingURL=index.css.map */
