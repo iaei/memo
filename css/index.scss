@@ -135,15 +135,28 @@ $white:#f3f3f3;
             flex-direction: column;
             font-size: 14px;
             .itemWrap{
+                background-color: #fff;
+             
                 .item {
+                    display: flex;
+                    align-items: center;
                     background-color: #fff;
                     height: 62px;//高度要为数值，不然将导致高度减小动画失效
+                    flex: 1;
+                    .circle {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 3px;
+                        margin-left: 15px;
+                        background-color: $blue;        
+                    }
                     .title {
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
                         height: 60px;
                         padding:0 13px;
+                        flex:1;
                         p {
                             pointer-events: none;
                             white-space: nowrap;

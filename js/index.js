@@ -68,6 +68,7 @@
             this.$items.innerHTML = this.items.map(function (item, index) {
                 return `<div class = "itemWrap" data-index="${index}">
                             <div class= "item" data-index="${index}" check="-1">
+                                <div class="circle"></div>
                                 <div class = "title" ">
                                     <p>${item.title}</p>
                                     <div class="deadLine"></div>
@@ -152,7 +153,7 @@
 
                 self.islongtouch = setTimeout(function () {
                     if (self.ishold) {
-                        self.slideItem.style.color = "#1378f0";//笔记被选中时做
+                        self.slideItem.firstElementChild.style.backgroundColor="#46e8b6";//笔记被选中时做
                         self.slideItem.classList.add("waitBeDel");
                         multiSelectMode();
                     }
@@ -323,10 +324,13 @@
                         self.slideItem.setAttribute("check", `${ischeck}`);
                     }();
                     if (self.slideItem.getAttribute("check") === "1") {
-                        self.slideItem.style.color = "#1378f0";//笔记被选中时做
+                        //笔记被选中时做
+                        self.slideItem.firstElementChild.style.backgroundColor="#46e8b6";
+                        
                         self.slideItem.classList.add("waitBeDel");
                     } else if (self.slideItem.getAttribute("check") === "-1") {
-                        self.slideItem.style.color = "black";//笔记未选中时做
+                        //笔记未选中时做
+                        self.slideItem.firstElementChild.style.backgroundColor="rgb(19, 120, 240)";
                         self.slideItem.classList.remove("waitBeDel");
                     }
                 }

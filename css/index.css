@@ -91,20 +91,32 @@ p {
       display: flex;
       flex-direction: column;
       font-size: 14px; }
-      #memo > main .items .itemWrap .item {
-        background-color: #fff;
-        height: 62px; }
-        #memo > main .items .itemWrap .item .title {
+      #memo > main .items .itemWrap {
+        background-color: #fff; }
+        #memo > main .items .itemWrap .item {
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          height: 60px;
-          padding: 0 13px; }
-          #memo > main .items .itemWrap .item .title p {
-            pointer-events: none;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden; }
+          background-color: #fff;
+          height: 62px;
+          flex: 1; }
+          #memo > main .items .itemWrap .item .circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            margin-left: 15px;
+            background-color: #1378f0; }
+          #memo > main .items .itemWrap .item .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            padding: 0 13px;
+            flex: 1; }
+            #memo > main .items .itemWrap .item .title p {
+              pointer-events: none;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden; }
 
 #undo {
   height: 50px;
