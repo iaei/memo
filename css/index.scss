@@ -135,7 +135,7 @@ $white:#f3f3f3;
             flex-direction: column;
             font-size: 14px;
             .itemWrap{
-                background-color: #fff;
+                //background-color: #fff;
              
                 .item {
                     display: flex;
@@ -143,6 +143,7 @@ $white:#f3f3f3;
                     background-color: #fff;
                     height: 62px;//高度要为数值，不然将导致高度减小动画失效
                     flex: 1;
+                    cursor: pointer;
                     .circle {
                         width: 10px;
                         height: 10px;
