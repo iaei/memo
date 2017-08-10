@@ -133,6 +133,7 @@ $white:#f3f3f3;
         .items {
             display: flex;
             flex-direction: column;
+            background-color: #fff;
             font-size: 14px;
             cursor: pointer;
             .itemWrap{
@@ -155,6 +156,7 @@ $white:#f3f3f3;
                     .title {
                         display: flex;
                         justify-content: space-between;
+                        background-color: #fff;
                         align-items: center;
                         height: 60px;
                         padding:0 13px;

@@ -90,6 +90,7 @@ p {
     #memo > main .items {
       display: flex;
       flex-direction: column;
+      background-color: #fff;
       font-size: 14px;
       cursor: pointer; }
       #memo > main .items .itemWrap .item {
@@ -108,6 +109,7 @@ p {
         #memo > main .items .itemWrap .item .title {
           display: flex;
           justify-content: space-between;
+          background-color: #fff;
           align-items: center;
           height: 60px;
           padding: 0 13px;
