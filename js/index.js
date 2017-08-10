@@ -42,10 +42,6 @@
         handleEvent(event) {
             let target = event.target;
             switch (true) {
-                case target.matches("#newItem"):
-                    this.clear();
-                    this.editor();
-                    break;
                 case target.matches(".save"):
                     this.save();
                     break;
@@ -59,7 +55,7 @@
         },
 
         render() {
-            console.log(this.items.length === 0);
+            //console.log(this.items.length === 0);
             if (this.items.length === 0) {
                this.$blank.style.display="flex";
             } else {
@@ -122,7 +118,6 @@
 
         view() {
             memo.index = event.target.parentElement.getAttribute('data-index');
-
             memo.$edTitle.value = memo.items[memo.index].title;
             memo.$edDetail.value = memo.items[memo.index].detail;
             memo.editor();
