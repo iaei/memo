@@ -117,6 +117,7 @@
         },
 
         view() {
+            event.target.style.cursor = "pointer";
             memo.index = event.target.parentElement.getAttribute('data-index');
             memo.$edTitle.value = memo.items[memo.index].title;
             memo.$edDetail.value = memo.items[memo.index].detail;
