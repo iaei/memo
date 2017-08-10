@@ -235,7 +235,7 @@
                     self.t = setInterval(function () {
                         t++;
                         //undo3秒后消失
-                        if (t >= 3) {
+                        if (t >= 3&&self.slideItem.getAttribute("check") === "-1") {
                             this.delElement();
                             self.$undo.style.display = "none";
                             clearInterval(self.t);
