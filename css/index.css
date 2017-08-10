@@ -110,7 +110,8 @@ p {
           align-items: center;
           height: 60px;
           padding: 0 13px;
-          flex: 1; }
+          flex: 1;
+          cursor: pointer; }
           #memo > main .items .itemWrap .item .title p {
             pointer-events: none;
             white-space: nowrap;
