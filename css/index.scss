@@ -135,10 +135,9 @@ $white:#f3f3f3;
             flex-direction: column;
             background-color: #fff;
             font-size: 14px;
-            cursor: pointer;
+        
             .itemWrap{
-                //background-color: #fff;
-             
+                
                 .item {
                     display: flex;
                     align-items: center;
@@ -149,7 +148,7 @@ $white:#f3f3f3;
                     .circle {
                         width: 10px;
                         height: 10px;
-                        border-radius: 3px;
+                        border-radius: 10px;
                         margin-left: 15px;
                         background-color: $blue;        
                     }
@@ -161,12 +160,13 @@ $white:#f3f3f3;
                         height: 60px;
                         padding:0 13px;
                         flex:1;
-                        cursor: pointer;
+                        
                         p {
                             pointer-events: none;
                             white-space: nowrap;
                             text-overflow: ellipsis;
                             overflow: hidden;
+                            font-size: 14px;
                         }
                     }   
                 }
@@ -191,11 +191,13 @@ $white:#f3f3f3;
     p {
         float:left;
         line-height:50px;
+        color: yellow;
+        font-weight: bolder;
     }
     #undoButton {
         float:right;
-        color: yellow;
-        font-weight: bolder;
+        color: tomato;
+        //font-weight: bolder;
     }
     
 }
@@ -236,17 +238,17 @@ $white:#f3f3f3;
         .edTitle {
             height: 40px;
             background-color: $blue;
-            padding:3px 10px;
+            padding:3px 15px;
             color: #fff;
             input {
                 height: 100%;
                 width: 100%;
                 background-color: $blue;
-                font-size: 16px;
+                font-size: 14px;
                 color: #fff;
                 &::-webkit-input-placeholder{
                     color: #fff;
-                    font-size: 14px;
+                    font-size: 12px;
                 }
 
               
@@ -262,25 +264,7 @@ $white:#f3f3f3;
             textarea {
                 flex: 1;
                 resize: none;
-            }
-        }
-
-        .edDeadline {
-            width: 100%;
-            height:40px;
-            background-color: lightgreen;
-            .year {
-                width: 100%/3;
-                height: 100%;
-                background-color: #fff;
-            }
-            .month {
-                width: 100%/3;
-                height: 100%;
-            }
-            .day {
-                width: 100%/3;
-                height: 100%;
+                font-size: 16px;
             }
         }
     }

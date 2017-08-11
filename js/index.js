@@ -106,7 +106,6 @@
         save() {
             this.items[this.index].title = this.$edTitle.value;
             this.items[this.index].detail = this.$edDetail.value;
-
             this.storage();
             this.render();
             this.home();
