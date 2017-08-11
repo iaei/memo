@@ -144,13 +144,22 @@ $white:#f3f3f3;
                     background-color: #fff;
                     height: 62px;//高度要为数值，不然将导致高度减小动画失效
                     flex: 1;
-                    cursor: pointer;
                     .circle {
                         width: 10px;
                         height: 10px;
                         border-radius: 10px;
                         margin-left: 15px;
-                        background-color: $blue;        
+                        background-color: $blue;
+                        &::after {
+                            content: "";
+                            display: block;
+                            height: 62px;
+                            width: 40px;
+                            position: absolute;
+                            margin-left: -15px;
+                            margin-top: -25px;
+                            background-color: rgba(0, 0, 0, 0);
+                        }           
                     }
                     .title {
                         display: flex;
@@ -191,13 +200,12 @@ $white:#f3f3f3;
     p {
         float:left;
         line-height:50px;
-        color: yellow;
         font-weight: bolder;
+        color: $black;
     }
     #undoButton {
         float:right;
-        color: tomato;
-        //font-weight: bolder;
+        color: yellow;
     }
     
 }
@@ -334,7 +342,7 @@ $white:#f3f3f3;
             display: flex;
             justify-content: flex-end;
             color: $blue;
-            font-size: 14px;
+            font-size: 12px;
             #true {
                 margin-left: 20px;
             }

@@ -97,14 +97,22 @@ p {
         align-items: center;
         background-color: #fff;
         height: 62px;
-        flex: 1;
-        cursor: pointer; }
+        flex: 1; }
         #memo > main .items .itemWrap .item .circle {
           width: 10px;
           height: 10px;
           border-radius: 10px;
           margin-left: 15px;
           background-color: #1378f0; }
+          #memo > main .items .itemWrap .item .circle::after {
+            content: "";
+            display: block;
+            height: 62px;
+            width: 40px;
+            position: absolute;
+            margin-left: -15px;
+            margin-top: -25px;
+            background-color: transparent; }
         #memo > main .items .itemWrap .item .title {
           display: flex;
           justify-content: space-between;
@@ -135,11 +143,11 @@ p {
   #undo p {
     float: left;
     line-height: 50px;
-    color: yellow;
-    font-weight: bolder; }
+    font-weight: bolder;
+    color: #0b0f1b; }
   #undo #undoButton {
     float: right;
-    color: tomato; }
+    color: yellow; }
 
 #editor {
   z-index: 2;
@@ -246,7 +254,7 @@ p {
       display: flex;
       justify-content: flex-end;
       color: #1378f0;
-      font-size: 14px; }
+      font-size: 12px; }
       .confirmDelWrap .confirmDel .confirm #true {
         margin-left: 20px; }
 

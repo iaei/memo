@@ -4,7 +4,7 @@
 
 
         init() {
-            this.items = JSON.parse(localStorage.getItem(this.LOCAL_STORAGE_KEY)) || [];
+            this.items = JSON.parse(localStorage.getItem(this.LOCAL_STORAGE_KEY)) || [{title:'请在chrome手机端使用',detail:''},{title:'使用底部输入框快速新建一条便签',detail:''},{title:'点击便签进入详情编辑',detail:''},{title:'侧滑删除一条便签',detail:''},{title:'长按便签进入多选模式',detail:''},];
             this.index = null;
             this.$memo = document.querySelector("#memo");
 
@@ -133,6 +133,7 @@
             };
 
             let startHandler = function (event) {
+                //console.log(event.target);
                 self.countNum = 0;
                 if (isItem()) {
                     init();
@@ -266,7 +267,7 @@
             };
 
             let isItem = function () {
-                return event.target.className === "title";
+                return event.target.className === "title"||event.target.className === "circle";
             };
 
             let undo = function () {
